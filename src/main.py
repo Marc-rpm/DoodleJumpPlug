@@ -77,11 +77,8 @@ class game:
                         self.platform_create(random.random() * (1.0 - GAME_PLATFORM_WIDTH), -GAME_PLATFORM_HEIGHT - self.wy, (random.random() * 0.5) if self.moving_platform() else 0.0, 0.0)
                     elif isinstance(e, boost):
                         self.boost_create(random.random() * (1.0 - GAME_BOOST_WIDTH), -GAME_BOOST_HEIGHT - self.wy, 0.0, 0.0)
-                        
-    def moving_platform(self):
-        return random.random() < 0.2
 
-    def boost(self):
+    def moving_platform(self):
         return random.random() < 0.2
 
     def reset(self):
@@ -129,7 +126,7 @@ class entity:
         self.h = h
         self.vel_x = vel_x
         self.vel_y = vel_y
-    
+
     def draw(self, sf):
         pg.draw.rect(sf,(0,0,0),(self.x,self.y ,self.w,self.h))
     
