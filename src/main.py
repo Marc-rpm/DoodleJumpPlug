@@ -34,13 +34,15 @@ class game:
         self.reset()
 
     def render(self):
-        self.screen.fill("white")
-        
+        self.render_background()
+
         if self.game_status != GAME_OVER:
             self.player.draw(self.screen, self.wy)
             self.render_game()
         else:
             self.render_death_screen()
+        
+
 
     def render_game(self):
         for entity in self.entities:
@@ -95,6 +97,11 @@ class game:
             x = random.random() * (1.0 - GAME_PLATFORM_WIDTH)
             y = float(i) / float(GAME_PLATFORMS)
             self.platform_create(x, y, 0, 0)
+
+    def render_background(self):
+        background = pg.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "sprites", "background.png")).convert_alpha()
+        background = pg.transform.scale(background, (self.WIDTH, self.HEIGHT))
+        self.screen.blit(background, (0, 0))
 
     def input(self):
         key = pg.key.get_pressed()
@@ -201,7 +208,7 @@ class boost(entity):
         (WIDTH, HEIGHT) = sf.get_size()
         img = pg.transform.scale(self.texture, (self.w * WIDTH, self.h * HEIGHT))
         sf.blit(img, (self.x * WIDTH, self.getY(wy) * HEIGHT))
-        
+
 def main():
     g = game()
     
@@ -216,7 +223,8 @@ def main():
         g.update()
         g.collision()
         g.render()
-        
+
+
         pg.display.flip()
         g.dt = g.clock.tick(60) / 1000.0
     
