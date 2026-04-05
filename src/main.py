@@ -43,7 +43,7 @@ class game:
             
         else:
             self.render_death_screen()
-        
+
     def render_game(self):
         for entity in self.entities:
             entity.draw(self.screen, self.wy)
@@ -51,6 +51,10 @@ class game:
     def render_death_screen(self):
         death_msg = self.font.render("YOU DIED!", True, "black") 
         restart_option = self.font.render("PRESS SPACE TO RESTART!", True, "black")
+        death_score_msg = self.font.render("YOU REACHED:", True, "black")
+        death_score = self.font.render("A SCORE OF  {score}".format(score=self.score_num), True, "black")
+        self.screen.blit(death_score, (self.WIDTH // 3.25, self.HEIGHT // 2.25))
+        self.screen.blit(death_score_msg, (self.WIDTH // 3.25, self.HEIGHT // 2.75))
         self.screen.blit(death_msg, (self.WIDTH // 2.75, self.HEIGHT // 5))
         self.screen.blit(restart_option, (self.WIDTH // 7, self.HEIGHT // 1.5))
 
