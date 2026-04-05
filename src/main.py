@@ -23,27 +23,27 @@ class game:
         self.screen = pg.display.set_mode((self.WIDTH, self.HEIGHT), pg.RESIZABLE)
         self.clock = pg.time.Clock()
         self.running = True
-        self.font = pg.font.SysFont("arial", 60)
-        
+        self.font = pg.font.Font("font.ttf", 64)
         self.game_status = GAME_RUNNING
         self.wy = 0
         self.dt = 0.0
         self.player = player(0.5 - GAME_PLAYER_WIDTH / 2, 0.1, GAME_PLAYER_WIDTH, GAME_PLAYER_HEIGHT, 0.0, 0.0)
         self.entities = []
+        self.score_points = 0
 
         self.reset()
 
     def render(self):
         self.render_background()
-
+        
         if self.game_status != GAME_OVER:
             self.player.draw(self.screen, self.wy)
+            self.render_score()
             self.render_game()
+            
         else:
             self.render_death_screen()
         
-
-
     def render_game(self):
         for entity in self.entities:
             entity.draw(self.screen, self.wy)
@@ -51,8 +51,8 @@ class game:
     def render_death_screen(self):
         death_msg = self.font.render("YOU DIED!", True, "black") 
         restart_option = self.font.render("PRESS SPACE TO RESTART!", True, "black")
-        self.screen.blit(death_msg, (self.WIDTH // 3, self.HEIGHT // 5))
-        self.screen.blit(restart_option, (self.WIDTH // 10, self.HEIGHT // 1.5))
+        self.screen.blit(death_msg, (self.WIDTH // 2.75, self.HEIGHT // 5))
+        self.screen.blit(restart_option, (self.WIDTH // 7, self.HEIGHT // 1.5))
 
     def platform_create(self, x, y, vel_x, vel_y):
         self.entities.append(platform(x, y, GAME_PLATFORM_WIDTH, GAME_PLATFORM_HEIGHT, vel_x, vel_y))
@@ -87,6 +87,7 @@ class game:
         self.game_status = GAME_RUNNING
         self.wy = 0
         self.dt = 0.0
+        self.score_points = 0
         
         self.player = player(0.5 - GAME_PLAYER_WIDTH / 2, 0.1, GAME_PLAYER_WIDTH, GAME_PLAYER_HEIGHT, 0.0, 0.0)
         self.entities = []
@@ -102,6 +103,16 @@ class game:
         background = pg.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "sprites", "background.png")).convert_alpha()
         background = pg.transform.scale(background, (self.WIDTH, self.HEIGHT))
         self.screen.blit(background, (0, 0))
+
+    def render_score(self):
+        self.score_num = self.score()
+        score_text = self.font.render("Score: {score}".format(score=self.score_num) , True, "black") 
+        self.screen.blit(score_text, (self.WIDTH // 1.5, self.HEIGHT // 10))
+
+    def score(self):
+        if self.player.getY(self.wy) < 0.3 and self.player.vel_y < 0:
+            self.score_points += 1
+        return self.score_points // 10
 
     def input(self):
         key = pg.key.get_pressed()

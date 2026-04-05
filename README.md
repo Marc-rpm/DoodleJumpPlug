@@ -30,11 +30,3 @@ Keep jumping as long as possible.<br>
 If you fall → **Game Over**
 
 ---
-
-## ✨ Notes
-
-* Clean and minimal project
-* Great for learning Pygame
-* Easy to expand with your own features
-
----
