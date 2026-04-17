@@ -11,6 +11,7 @@ Jump on platforms and try not to fall!
 * 🪜 Simple platforms
 * 💀 Game over when you fall
 * 🔄 Restart with **SPACE**
+* 🖥️ Start Menu press **SPACE** to start the game
 
 ---
 
